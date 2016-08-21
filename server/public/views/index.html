@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Template</title>
+
+
+    <script type="text/javascript" src="./vendors/jquery.min.js"></script>
+    <script type="text/javascript" src="./scripts/clientapp.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./styles/style.css">
+
+</head>
+
+<body>
+    <div id="topBar">
+        <div id="innerTopBar">
+            <div id="innerTopBar_left">
+                <div id="topBar_icon">
+                    <div id="topBar_icon_inner">
+
+                    </div>
+                </div>
+                <span id="topBar_logoText">todo.list</span>
+            </div>
+            <div id="innerTopBar_right">
+                <span id="topBar_rightIcon" class="glyphicon glyphicon-th-large"></span>
+            </div>
+        </div>
+    </div>
+    <div id="mainContainer">
+        <div id="dataNav">
+            <div id="dataNav_topSection">
+
+                <ul id="dataNav_filters">
+                    <li class="filter" id="filter_history"><span class="navIcon">O</span>History</li>
+                    <li class="filter" id="filter_today"><span class="navIcon">O</span>Today</li>
+                    <li class="filter" id="filter_7"><span class="navIcon">O</span>Next 7 Days</li>
+                </ul>
+            </div>
+
+
+            <div id="dataNav_midSection">
+            </div>
+
+
+        </div>
+
+
+
+
+        <div id="dataDisplay">
+            <div id="displayDate">
+                <span id="dayName">Today</span>
+                <span id="dateText">Sat: Aug 20 // <a id="addTaskLabel" href='#'>add task</a></ad></span>
+                <div id="underline"></div>
+                <div id="formPopup">
+                    <form id="addTask_form">
+                        <div class="form-group">
+                            <label class="taskLabel" for="taskName">Task:</label>
+                            <input type="text" id="task_name" name="task_name" class="task_input form-control" />
+                            <input type="text" id="task_label" placeholder="label" name="task_label" class="label_input form-control" />
+                        </div>
+
+                        <button id="addTaskButton">Add</button>
+                        <a href='#' id="cancel">Cancel</a>
+                        <div id="bottomCover"></div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="task-list">
+
+            </div>
+
+
+
+            <div id="addTask">
+                <a href="#" class="action" id="addTaskLink">
+                    <span id="addTaskIcon">+</span>
+
+                    <span id="addTaskButton">Add Task</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
