@@ -41,7 +41,7 @@ body{
   position: fixed;
   margin-bottom: 10px;
   background-color: #DBD3D8;
-  width: 100%;
+  width: 580px;
   z-index: 200;
     opacity: 0.97;
 }
@@ -51,37 +51,74 @@ body{
   padding-top: 78px;
 }
 
-#bottomCover{
-  height: 30px;
-  background-color: #DBD3D8;
-  width:30%;
-}
+
 .task_input{
     display:inline-block;
-    width: 31%;
+    width: 35%;
     opacity: 0.8;
 }
 .label_input{
   display: inline-block;
+  width: 15%;
+  opacity: 0.8;
+}
+.priority_input{
+  display: inline-block;
   width: 10%;
   opacity: 0.8;
-
-
+}
+.edit_cancel{
+  padding-left: 15px;
+  font-weight: 300;
+}
+.edit_cancel:hover{
+font-weight: bolder;
+text-decoration: none;
+opacity: 1.0;
+}
+.edit_Content{
+  padding-right: 15px;
+  padding-left: 15px;
+  font-weight: 300;
+}
+.edit_Delete{
+  padding-right: 15px;
+  padding-left: 27px;
+  font-weight: 300;
 }
 
+.activeButton{
+  opacity: 1.0 !important;
+  font-weight: 500;
+
+}
+.edit_Delete:hover{
+  font-weight: bolder;
+  text-decoration: none;
+  opacity: 1.0;
+}
+.edit_Content:hover{
+font-weight: bolder;
+text-decoration: none;
+opacity: 1.0;
+}
 .hasDescription{
   opacity: 1.0 !important;
 }
 
 #addTaskButton{
   width: 120px;
-  margin-left: 49px;
+  margin-left: 15px;
 }
 
 #cancel{
   color: #CC2936;
   opacity: 0.7;
   padding-left: 4px;
+}
+
+.taskComplete{
+  text-decoration: line-through;
 }
 
 .form-group{
@@ -95,14 +132,11 @@ body{
 }
 
 
-
-
-
 .taskLabel{
   position: relative;
   top: 5px;
   display:inline-block;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 100;
   font-style: italic;
 }
@@ -140,8 +174,13 @@ body{
   font-size: 0.7em;
 }
 
+#addTaskLink:hover{
+  font-weight: bold;
+}
+
 #addTask {
   height: 50px;
+  padding-bottom: 420px;
 }
 
 #addTaskButton{
@@ -159,8 +198,9 @@ body{
 
 #addTaskLink:-webkit-any-link {
   text-decoration: none;
-  font-weight: bolder;
 }
+
+
 
 
 #dayName{
@@ -184,10 +224,11 @@ body{
     top: 0;
     opacity: 0.90;
     position: fixed;
-    z-index: 200;
+    z-index: 220;
     width: 100%;
-    border-bottom: solid 1px #CC2936;
+
     background-color: #CC2936;
+        border-bottom: solid 2px #A9FBD7;
     -webkit-transition: height 200ms ease-in;
     transition: height 200ms ease-in;
     box-shadow: 0 1px 2px rgba(0,0,0,0.15);
@@ -253,6 +294,12 @@ body{
   background-color: #CC2936;
 }
 
+.edit_icon{
+  opacity: 0.5;
+  color: #CC2936;
+  padding-left: 5px;
+  cursor: pointer;
+}
 #topBar_logoText{
   color: #A9FBD7;
   font-weight: 200;
@@ -289,9 +336,14 @@ body{
     display: inline-block;
     height: 1000px;
     margin: 0;
-    opacity: 0.7;
+    opacity: 1.0;
     padding: 0;
     background-color: #A9FBD7;
+    border-left: solid 2px #A9FBD7;
+    border-right: solid 2px #A9FBD7;
+-webkit-transition: height 200ms ease-in;
+transition: height 200ms ease-in;
+box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 #dataDisplay{
@@ -303,7 +355,7 @@ body{
     height: 1000px;
 
     margin: 0;
-    opacity: 0.7;
+    opacity: 1.0;
     padding: 0;
     padding-left: 30px;
 
