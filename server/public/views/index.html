@@ -37,15 +37,35 @@
         <div id="dataNav">
             <div id="dataNav_topSection">
 
-                <ul id="dataNav_filters">
+                <!-- <ul id="dataNav_filters">
                     <li class="filter" id="filter_history"><span class="navIcon">O</span>History</li>
                     <li class="filter" id="filter_today"><span class="navIcon">O</span>Today</li>
                     <li class="filter" id="filter_7"><span class="navIcon">O</span>Next 7 Days</li>
-                </ul>
+                </ul> -->
             </div>
 
 
             <div id="dataNav_midSection">
+                <ul id="dataNav_filters">
+                    <li class="filterBy" id="filterBy_priority"><span class="navIcon"></span>Priority</li>
+                    <ul id="priority_filter">
+                        <li class="labelFilter" id="highToLow">highest to lowest</li>
+                        <li class="labelFilter" id="lowToHigh">lowest to highest</li>
+                        <li class="labelFilter" id="low">low: 0-3</li>
+                        <li class="labelFilter" id="medium">med: 4-6</li>
+                        <li class="labelFilter" id="high">high:7-10</li>
+                    </ul>
+
+                    <li class="filterBy" id="filterBy_label"><span class="navIcon"></span>Label</li>
+                    <ul id="labelList">
+                        <!-- dynamic fill -->
+                    </ul>
+                    <li class="filterBy" id="filterBy_completed"><span class="navIcon"></span>Completion</li>
+                    <ul id="priority_filter">
+                        <li class="labelFilter" id="is_complete">completed tasks</li>
+                        <li class="labelFilter" id="isnt_complete">uncomplete tasks</li>
+                    </ul>
+                </ul>
             </div>
 
 
@@ -56,8 +76,8 @@
 
         <div id="dataDisplay">
             <div id="displayDate">
-                <span id="dayName">Today</span>
-                <span id="dateText">Sat: Aug 20 // <a id="addTaskLabel" href='#'>add task</a></ad></span>
+                <span id="dayName">My Tasks</span>
+                <span id="dateText">todo.list // <a id="addTaskLabel" href='#'>add task</a></ad></span>
                 <div id="underline"></div>
                 <div id="formPopup">
                     <form id="addTask_form">
@@ -86,31 +106,12 @@
 
 
 
-            <div id="addTask">
-                <a href="#" class="action" id="addTaskLink">
-                    <span id="addTaskIcon">+</span>
 
-                    <span id="addTaskButton">Add Task</span>
-                </a>
-            </div>
         </div>
     </div>
 
 </body>
 
-<form id="addTask_form">
-    <div class="form-group">
-        <label class="taskLabel" for="taskName">Task:</label>
-        <input type="text" id="task_name" name="task_name" class="task_input form-control" />
-        <label class="taskLabel" for="task_Label">Label:</label>
-        <input type="text" id="task_label" placeholder="" name="task_label" class="label_input form-control" />
-        <label class="taskLabel" for="task_Priority">Priority:</label>
-        <input type="text" id="task_priority" placeholder="" name="task_priority" class="priority_input form-control" />
-    </div>
 
-    <button id="addTaskButton">Add</button>
-    <a href='#' id="cancel">Cancel</a>
-    <div id="bottomCover"></div>
-</form>
 
 </html>

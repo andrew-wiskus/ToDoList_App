@@ -234,6 +234,36 @@ opacity: 1.0;
   opacity: 0.9;
 }
 
+#filterBy_header{
+  padding-left: 20px;
+  font-size: 18px;
+}
+.filterBy{
+  padding-left: 20px;
+  font-size: 23px;
+  font-weight: lighter;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.labelFilter{
+  cursor: pointer;
+  font-weight: 100;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.labelFilter:hover{
+  background-color: white;
+  opacity: 0.8;
+}
+
+.filterBy:hover{
+  background-color: white;
+  opacity: 0.8;
+}
+
 .delete_comment:hover{
   font-weight: 500;
   text-decoration: none;
@@ -453,9 +483,17 @@ padding-top: 25px;
     transition: color .1s ease-in,background-color .1s ease-in;
 
   }
-
+  #dataNav_midSection{
+    padding-top: 12px;
+  }
   #dataNav_topSection .filter:hover{
     background-color: white;
     opacity: 0.6;
+    transition: color .1s ease-in,background-color .2s ease-in;
+  }
+
+  .selectedFilter{
+    background-color: white !important;
+    opacity: 0.6 !important;
     transition: color .1s ease-in,background-color .2s ease-in;
   }

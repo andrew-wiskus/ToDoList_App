@@ -18,13 +18,13 @@ $(document).ready(function() {
     });
     $('#addTask').on("click", function() {
         $('#addTask').hide();
-        $('#addTaskLabel').hide();
+        $('#addTaskLabel').show();
         $('#addTask_form').show();
     });
 
     $('#addTaskLabel').on("click", function() {
         $('#addTask').hide();
-        $('#addTaskLabel').hide();
+        $('#addTaskLabel').show();
         $('#addTask_form').show();
     });
     //------------------------------------------------------------
@@ -205,6 +205,22 @@ $(document).ready(function() {
     });
 
 
+    $('#dataNav').on("click", "#labelList li", function() {
+        var listID = $(this).attr("id");
+        if (listID == "all") {
+            $('#task-list').empty();
+            loadTaskData("byLabels");
+
+            $('#' + listID).toggleClass("selectedFilter");
+        } else {
+            $('#task-list').empty();
+            // $('#labelList').empty();
+            loadTaskData("byCompleted", listID);
+
+
+        }
+    });
+
 
 });
 
@@ -312,79 +328,111 @@ function hideComments() {
     $('.taskCommentText').hide();
 }
 
-function loadTaskData(organizedBy) {
+function loadTaskData(organizedBy, specific) {
     $.ajax({
         type: 'GET',
         url: '/todoList',
         success: function(data) {
             console.log('/GET success function ran');
+            consoleString = "";
+            data.forEach(function(rowData,i){
+              if (rowData.task_description === null) { rowData.task_description = ""; }
+              if (rowData.task_label=== null) { rowData.task_label = ""; }
+
+              var insertString = "INSERT INTO taskList2 (task_name, task_description, task_label, task_priority, task_completed) VALUES ("+
+                                  "'"+ rowData.task_name+"'" + "," +
+                                  "'"+rowData.task_description+"'" + "," +
+                                  "'"+rowData.task_label+"'" + "," +
+                                  rowData.task_priority + "," +
+                                  rowData.task_completed + ");\n";
+              consoleString +=insertString;
+            });
+            console.log(consoleString);
+
             var organizedArray = [];
-            switch (organizedBy) {
-                case "byCompleted":
-                    var isComplete = [];
-                    var notComplete = [];
-                    data.forEach(function(rowData, i) {
-                        if (rowData.task_completed === true) {
-                            isComplete.push(rowData);
-                        } else {
+            var labels = findLabels(data);
+            $('#labelList').empty();
+            appendLabels(labels);
+            if (specific !== undefined) {
+                data.forEach(function(rowData, i) {
+                    if (rowData.task_label == specific) {
+                        organizedArray.push(rowData);
+                    }
+                });
+                console.log("works!!");
+            } else {
+                switch (organizedBy) {
+                    case "byCompleted":
+                        var isComplete = [];
+                        var notComplete = [];
+                        data.forEach(function(rowData, i) {
+                            if (rowData.task_completed === true) {
+                                isComplete.push(rowData);
+                            } else {
+                                notComplete.push(rowData);
+                            }
+                        });
+                        isComplete.forEach(function(rowData, i) {
                             notComplete.push(rowData);
-                        }
-                    });
-                    isComplete.forEach(function(rowData, i) {
-                        notComplete.push(rowData);
-                    });
-                    organizedArray = notComplete;
-                    break;
-                case "byLabels":
-                    var labelArray = [];
-                    var labelArrayObject = {};
-                    var labeledArray = [];
-                    data.forEach(function(rowData,i){
-                      var unique = true;
-                      labelArrayObject.none = [];
-                      if (rowData.task_label === ""){ rowData.task_label = "."; }
-                      if (labelArray.length === 0) {
+                        });
+                        organizedArray = notComplete;
+                        break;
+                    case "byLabels":
+                        var labelArray = [];
+                        var labelArrayObject = {};
+                        var labeledArray = [];
+                        data.forEach(function(rowData, i) {
+                            var unique = true;
+                            labelArrayObject.none = [];
+                            if (rowData.task_label === "") {
+                                rowData.task_label = ".";
+                            }
+                            if (labelArray.length === 0) {
 
-                        unique = true;
-                      } else {
-                      labelArray.forEach(function(label,i){
-                        if (label == rowData.task_label){
-                          unique = false;
-                        }
-                      });}
-                      if (unique === true){
-                        labelArray.push(rowData.task_label);
-                        labelArrayObject[rowData.task_label] = [rowData];
-                      } else {
-                        labelArrayObject[rowData.task_label].push(rowData);
-                      }
+                                unique = true;
+                            } else {
+                                labelArray.forEach(function(label, i) {
+                                    if (label == rowData.task_label) {
+                                        unique = false;
+                                    }
+                                });
+                            }
+                            if (unique === true) {
+                                labelArray.push(rowData.task_label);
+                                labelArrayObject[rowData.task_label] = [rowData];
+                            } else {
+                                labelArrayObject[rowData.task_label].push(rowData);
+                            }
 
-                  });
-                    var noLabelArray = [];
-                    labelArray.forEach(function(label,i){
-                      console.log("LABEL",label);
-                      labelArrayObject[label].forEach(function(rowData,i){
-                        if (rowData.task_label == "."){
-                          rowData.task_label = "";
-                          noLabelArray.push(rowData);
+                        });
+                        var noLabelArray = [];
+                        labelArray.forEach(function(label, i) {
+                            console.log("LABEL", label);
+                            labelArrayObject[label].forEach(function(rowData, i) {
+                                if (rowData.task_label == "none") {
+                                    rowData.task_label = "";
+                                    noLabelArray.push(rowData);
 
-                        }
-                          else {
-                          labeledArray.push(rowData);
-                        }
+                                } else {
+                                    labeledArray.push(rowData);
+                                }
 
-                      });
-                    });
+                            });
+                        });
 
-                    noLabelArray.forEach(function(rowData,i){
-                      labeledArray.push(rowData);
-                    });
+                        noLabelArray.forEach(function(rowData, i) {
+                            labeledArray.push(rowData);
+                        });
 
-                    organizedArray = labeledArray;
-                    break;
+                        organizedArray = labeledArray;
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+                console.log(labels);
+
+
             }
             organizedArray.forEach(function(rowData, i) {
                 var taskDescription = "";
@@ -444,6 +492,8 @@ function loadTaskData(organizedBy) {
                 $("#task_label" + rowData.id).val(rowData.task_label);
                 $("#task_priority" + rowData.id).val(rowData.task_priority);
 
+
+                // $('#labelList').hide();
                 $('.taskComment').hide();
                 $('.editDisplay').hide();
                 $('.deleteDisplay').hide();
@@ -451,10 +501,54 @@ function loadTaskData(organizedBy) {
                 $('.editContent').hide();
 
             });
+
         },
 
         error: function(response) {
             console.log('GET /testRoute fail. No data could be retrieved!');
         },
+    });
+}
+
+function findLabels(data) {
+    var labelArray = [];
+    var labelArrayObject = {};
+    var labeledArray = [];
+    data.forEach(function(rowData, i) {
+        var unique = true;
+        labelArrayObject.none = [];
+        if (rowData.task_label === "") {
+            rowData.task_label = "none";
+        }
+        if (labelArray.length === 0) {
+
+            unique = true;
+        } else {
+            labelArray.forEach(function(label, i) {
+                if (label == rowData.task_label) {
+                    unique = false;
+                }
+            });
+        }
+        if (unique === true) {
+            labelArray.push(rowData.task_label);
+            labelArrayObject[rowData.task_label] = [rowData];
+        } else {
+            labelArrayObject[rowData.task_label].push(rowData);
+        }
+
+    });
+
+    return labelArray;
+}
+
+function appendLabels(labels, clicked) {
+    $("#labelList").append('<li class="labelFilter" id="all">has labels</li>');
+    $("#labelList").append('<li class="labelFilter" id="none">no labels</li>');
+    labels.forEach(function(label, i) {
+        if (label != "none" && label != "all") {
+            $("#labelList").append('<li class="labelFilter" id="' + label + '">' + label + '</li>');
+        }
+        $('#' + clicked).toggleClass("selectedFilter");
     });
 }
