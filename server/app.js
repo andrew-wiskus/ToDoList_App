@@ -37,6 +37,13 @@ app.use('/testRoute', testRoute);
 var todoList = require("./routes/todoList.js");
 app.use('/todoList', todoList);
 
+var editList = require("./routes/editList.js");
+app.use('/editList', editList);
+
+var editTask = require("./routes/editTask.js");
+app.use('/editTask', editTask);
+
+
 
 
 

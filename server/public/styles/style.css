@@ -23,6 +23,7 @@ body{
 }
 
 #underlineTask{
+  display: none;
   height: 1px;
   width: 93%;
   opacity: 0.2;
@@ -131,7 +132,14 @@ opacity: 1.0;
   padding-left: 25px;
 }
 
+#confirm_delete{
+  padding-left: 25px;
+  padding-right: 4px;
+}
 
+.deleteDisplay{
+  margin-bottom: 5px;
+}
 .taskLabel{
   position: relative;
   top: 5px;
@@ -208,7 +216,28 @@ opacity: 1.0;
   display: inline-block;
   font-weight: lighter;
   font-size: 3.0em;
-  padding-top: 8px;
+}
+
+.edit_comment{
+  padding-left: 25px;
+  opacity: 0.3;
+}
+
+.delete_comment{
+  padding-left: 25px;
+  opacity: 0.3;
+}
+
+.edit_comment:hover{
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.delete_comment:hover{
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.9;
 }
 
 #dateText{
