@@ -1,226 +1,125 @@
+var myApp = angular.module("myApp", []);
+
+myApp.controller('IndexController', ["$scope", "$document", "$http", function($scope, $document, $http) {
+
+    $scope.taskData = {
+      fullData: [],
+      prioritys: [],
+      labels: [],
+      uniqueLabels: [],
+      labelsCount: [],
+      priorityCount: [],
+      completed: {
+        isTrue: 0,
+        isFalse: 0
+      }
+    };
+
+    getData();
+
+
+    function findLabels(allLabels){
+      var allCount = 0;
+      $scope.taskData.uniqueLabels = _.uniq(allLabels);
+      $scope.taskData.uniqueLabels.forEach(function(label,i){
+        if (label === ""){
+          $scope.taskData.uniqueLabels[i] = "unlabeled";
+        }
+      });
+      allLabels.forEach(function(label, i){
+        if (label !== "" && label != "unlabeled"){
+          allCount++;
+        }
+      });
+      $scope.taskData.allLabelsCount = allCount;
+
+    }
+    function countLabels(allLabels){
+      findLabels(allLabels);
+      $scope.taskData.labelsCount = _.countBy(allLabels, function(theLabel) {
+        var match = "";
+        $scope.taskData.uniqueLabels.forEach(function(label,i){
+          if (theLabel === ""){
+            match = "unlabeled";
+          }
+          if (label === theLabel){
+            match = label;
+            return match;
+          }
+
+        });
+        return match;
+      });
+    }
+    function countPrioritys(priorityArray) {
+        $scope.taskData.priorityCount = _.countBy(priorityArray, function(num) {
+            for (var i = 0; i < 11; i++) {
+                if (num == i) {
+                    return i + "";
+                }
+                if (num > 9 ) {
+                    return "10";
+                }
+                if (num === null){
+                  return "0";
+                }
+            }
+        });
+    }
+    function getData() {
+
+        $http.get('/todoList').then(
+            function(data) {
+                console.log(data);
+                $scope.taskData.fullData = data.data;
+                $scope.taskData.completed.isTrue = 0;
+                $scope.taskData.completed.isFalse = 0;
+
+                $scope.taskData.fullData.forEach(function(task,i){
+                  $scope.taskData.prioritys.push(task.task_priority);
+                  $scope.taskData.labels.push(task.task_label);
+                  if(task.task_completed === true){
+                    $scope.taskData.completed.isTrue++;
+                  } else {
+                    $scope.taskData.completed.isFalse++;
+                  }
+
+                });
+                countLabels($scope.taskData.labels);
+                countPrioritys($scope.taskData.prioritys);
+                console.log($scope.taskData);
+
+            }
+        );
+    }
+
+    $scope.clickedDateFilter = function(buttonClicked) {
+        switch (buttonClicked) {
+            case "history":
+                console.log("history filter clicked");
+                break;
+            case "today":
+                console.log("today filter clicked");
+                break;
+            case "nextSeven":
+                console.log("next seven filter clicked");
+                break;
+            default:
+                console.log("filter not working");
+        }
+    };
+
+}]);
+
+
+
+
 $(document).ready(function() {
     // loadTaskData("byLabels");
     loadTaskData("byCompleted");
 
     //hiddenElement
     $('#addTask_form').hide();
-
-
-
-    //listeners
-    //---------------------------------------------------------------
-    //---------------add task functionality listeners----------------
-    //---------------------------------------------------------------
-    $('#addTaskButton').on("click", addTaskClick);
-    $('#cancel').on("click", function() {
-        //TODO: fix this..? shitty way to do this.
-        location.reload();
-    });
-    $('#addTask').on("click", function() {
-        $('#addTask').hide();
-        $('#addTaskLabel').show();
-        $('#addTask_form').show();
-    });
-
-    $('#addTaskLabel').on("click", function() {
-        $('#addTask').hide();
-        $('#addTaskLabel').show();
-        $('#addTask_form').show();
-    });
-    //------------------------------------------------------------
-    //--------------task item icon listeners----------------------
-    //------------------------------------------------------------
-    $('#task-list').on("click", ".showDescription", commentIconClick);
-    $('#task-list').on("click", ".delete_comment", function() {
-        var clickedRow = $(this).parent().parent().attr("id");
-        //TODO:delete comment
-        console.log(clickedRow);
-        $.ajax({
-            type: 'PUT',
-            url: '/editList/' + clickedRow,
-            data: {
-                task_description: ""
-            },
-            success: function() {
-
-                $('#task-list').empty();
-                loadTaskData("byCompleted");
-            },
-            error: function() {
-                console.log("error in delete");
-            }
-        });
-
-    });
-
-    $('#task-list').on("click", "#cancel_comment", function() {
-        var clickedRow = $(this).parent().parent().parent().attr("id");
-        $('#taskComment' + clickedRow).hide();
-    });
-    $('#task-list').on("click", "#add_comment", function() {
-        console.log("works");
-
-        event.preventDefault();
-        //TODO: change icon opacity via toggleClass.
-        var clickedRow = $(this).parent().parent().parent().attr("id");
-        description = {};
-
-        $.each($('#addComment').serializeArray(), function(i, field) {
-            description[field.name] = field.value;
-        });
-
-
-
-        $.ajax({
-            type: 'PUT',
-            url: '/editList/' + clickedRow,
-            data: description,
-            success: function() {
-                console.log('/POST success function ran');
-                //empty and repopulate #dataTable
-                var taskDescription = description.task_description;
-
-
-                $('#addComment').empty();
-                $('#taskComment' + clickedRow + ' p').text(taskDescription);
-                if (description.task_description !== "") {
-                    $('#description' + clickedRow).toggleClass('hasDescription');
-                }
-                $('#editCurrentComment' + clickedRow).show();
-            },
-            error: function() {
-                console.log('/POST didnt work');
-            }
-
-        });
-
-
-    });
-    $('#task-list').on("click", ".checkBox", function() {
-        $(this).toggleClass('glyphicon-unchecked').toggleClass('glyphicon-check');
-        $(this).parent().children().first().next().toggleClass('taskComplete');
-
-
-        var statusID = $(this).parent().attr('id');
-        var taskStatus = {};
-
-        if ($(this).parent().children().first().next().hasClass('taskComplete')) {
-            taskStatus.status = true;
-        } else {
-            taskStatus.status = false;
-        }
-
-        $.ajax({
-            type: 'PUT',
-            url: '/todoList/' + statusID,
-            data: taskStatus,
-            success: function() {},
-            error: function() {
-
-            }
-        });
-    });
-
-    //---------------------------------------------------------------
-    //--------------edit task functionality--------------------------
-    //---------------------------------------------------------------
-    $('#task-list').on("click", ".edit_icon", editIconClick);
-    $('#task-list').on("click", ".delete_yes", function() {
-        var rowClicked = $(this).parent().parent().attr("id");
-        $.ajax({
-            type: 'DELETE',
-            url: '/todoList/' + rowClicked,
-            success: function() {
-                console.log('DELETED ITEM: ID:', rowClicked);
-
-                $('#task-list').empty();
-                loadTaskData("byCompleted");
-            },
-            error: function() {
-                console.log("error in delete");
-            }
-        });
-    });
-    $('#task-list').on("click", ".delete_no", function() {
-        var clickedRow = $(this).parent().parent().attr("id");
-        $('#editDisplay' + clickedRow).show();
-        $('#confirmDelete' + clickedRow).hide();
-    });
-    $('#task-list').on("click", ".edit_Delete", function() {
-        var rowClicked = $(this).parent().parent().attr("id");
-
-
-        $('#editDisplay' + rowClicked).hide();
-        $('#confirmDelete' + rowClicked).show();
-
-
-    });
-    $('#task-list').on("click", ".edit_Content", function() {
-
-        var rowClicked = $(this).parent().parent().attr("id");
-
-        $('#editDisplay' + rowClicked).hide();
-        if ($('#editContent' + rowClicked).is(":visible") === true) {
-            $('#editContent' + rowClicked).hide();
-        } else {
-            $('#editContent' + rowClicked).show();
-        }
-
-    });
-
-    $('#task-list').on("click", "#editTask_cancel", function() {
-        var rowClicked = $(this).parent().parent().parent().attr("id");
-        $(this).parent().parent().parent().children().first().next().next().next().text("");
-        $(this).parent().parent().parent().children().first().next().next().next().toggleClass("activeButton");
-        console.log(this);
-        console.log("works?");
-        $('#editContent' + rowClicked).hide();
-
-    });
-
-    $('#task-list').on("click", "#editTask_confirm", function() {
-        event.preventDefault();
-        var taskData = {};
-        var rowClicked = $(this).parent().parent().parent().attr("id");
-
-        $.each($('#editContentForm' + rowClicked).serializeArray(), function(i, field) {
-            taskData[field.name] = field.value;
-        });
-
-        $.ajax({
-            type: 'PUT',
-            url: '/editTask/' + rowClicked,
-            data: taskData,
-            success: function() {
-
-                $('#task-list').empty();
-                loadTaskData("byCompleted");
-            },
-            error: function() {
-                console.log("error in delete");
-            }
-        });
-
-        console.log("Works");
-    });
-
-
-    $('#dataNav').on("click", "#labelList li", function() {
-        var listID = $(this).attr("id");
-        if (listID == "all") {
-            $('#task-list').empty();
-            loadTaskData("byLabels");
-
-            $('#' + listID).toggleClass("selectedFilter");
-        } else {
-            $('#task-list').empty();
-            // $('#labelList').empty();
-            loadTaskData("byCompleted", listID);
-
-
-        }
-    });
-
 
 });
 
@@ -237,7 +136,7 @@ function addTaskClick() {
     if (taskData.task_priority === "") {
         taskData.task_priority = 0;
     }
-    console.log("typedData:", taskData);
+
 
 
     $.ajax({
@@ -245,7 +144,7 @@ function addTaskClick() {
         url: '/todoList',
         data: taskData,
         success: function() {
-            console.log('/POST success function ran');
+
             //empty and repopulate #dataTable
             $('#task-list').empty();
             loadTaskData("byCompleted");
@@ -254,7 +153,7 @@ function addTaskClick() {
 
         },
         error: function() {
-            console.log('/POST didnt work');
+
         }
 
     });
@@ -333,33 +232,15 @@ function loadTaskData(organizedBy, specific) {
         type: 'GET',
         url: '/todoList',
         success: function(data) {
-            console.log('/GET success function ran');
-            consoleString = "";
-            data.forEach(function(rowData,i){
-              if (rowData.task_description === null) { rowData.task_description = ""; }
-              if (rowData.task_label=== null) { rowData.task_label = ""; }
-
-              var insertString = "INSERT INTO taskList2 (task_name, task_description, task_label, task_priority, task_completed) VALUES ("+
-                                  "'"+ rowData.task_name+"'" + "," +
-                                  "'"+rowData.task_description+"'" + "," +
-                                  "'"+rowData.task_label+"'" + "," +
-                                  rowData.task_priority + "," +
-                                  rowData.task_completed + ");\n";
-              consoleString +=insertString;
-            });
-            console.log(consoleString);
 
             var organizedArray = [];
-            var labels = findLabels(data);
-            $('#labelList').empty();
-            appendLabels(labels);
             if (specific !== undefined) {
                 data.forEach(function(rowData, i) {
                     if (rowData.task_label == specific) {
                         organizedArray.push(rowData);
                     }
                 });
-                console.log("works!!");
+
             } else {
                 switch (organizedBy) {
                     case "byCompleted":
@@ -407,7 +288,7 @@ function loadTaskData(organizedBy, specific) {
                         });
                         var noLabelArray = [];
                         labelArray.forEach(function(label, i) {
-                            console.log("LABEL", label);
+
                             labelArrayObject[label].forEach(function(rowData, i) {
                                 if (rowData.task_label == "none") {
                                     rowData.task_label = "";
@@ -430,7 +311,7 @@ function loadTaskData(organizedBy, specific) {
                     default:
                         break;
                 }
-                console.log(labels);
+
 
 
             }
@@ -505,7 +386,7 @@ function loadTaskData(organizedBy, specific) {
         },
 
         error: function(response) {
-            console.log('GET /testRoute fail. No data could be retrieved!');
+
         },
     });
 }
@@ -542,13 +423,10 @@ function findLabels(data) {
     return labelArray;
 }
 
-function appendLabels(labels, clicked) {
-    $("#labelList").append('<li class="labelFilter" id="all">has labels</li>');
-    $("#labelList").append('<li class="labelFilter" id="none">no labels</li>');
+function appendLabels(labels) {
     labels.forEach(function(label, i) {
         if (label != "none" && label != "all") {
             $("#labelList").append('<li class="labelFilter" id="' + label + '">' + label + '</li>');
         }
-        $('#' + clicked).toggleClass("selectedFilter");
     });
 }

@@ -245,16 +245,25 @@ opacity: 1.0;
   padding-top: 5px;
   padding-bottom: 5px;
   cursor: pointer;
+  display: block;
+  margin-left: 20px;
+  padding-left: 0;
 }
 
-.labelFilter{
+#date_filter{
+  padding:0;
+  margin:0;
+  margin-top:30px;
+}
+.filter{
   cursor: pointer;
   font-weight: 100;
   padding-top: 2px;
   padding-bottom: 2px;
+  display: block;
 }
 
-.labelFilter:hover{
+.filter:hover{
   background-color: white;
   opacity: 0.8;
 }
@@ -388,12 +397,12 @@ opacity: 1.0;
 }
 
 #dataNav{
-    position: fixed;
-    overflow-x: hidden;
-    overflow-y: hidden;
+
+    overflow-x: scroll;;
+    overflow-y: scroll;
     width: 225px;
     display: inline-block;
-    height: 1000px;
+    height: 100%;
     margin: 0;
     opacity: 1.0;
     padding: 0;
@@ -411,7 +420,7 @@ box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     float: right;
 
     width: 620px;
-    height: 1000px;
+    height: 100%;
 
     margin: 0;
     opacity: 1.0;
@@ -483,8 +492,9 @@ padding-top: 25px;
     transition: color .1s ease-in,background-color .1s ease-in;
 
   }
+
   #dataNav_midSection{
-    padding-top: 12px;
+    padding-top: 15px;
   }
   #dataNav_topSection .filter:hover{
     background-color: white;

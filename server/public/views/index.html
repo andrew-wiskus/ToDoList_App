@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 
 <head>
 
     <meta charset="utf-8">
     <title>Template</title>
 
-
+    <script type="text/javascript" src="./vendors/angular/angular.min.js"></script>
     <script type="text/javascript" src="./vendors/jquery.min.js"></script>
+    <script type="text/javascript" src="./vendors/underscore/underscore-min.js"></script>
     <script type="text/javascript" src="./scripts/clientapp.js"></script>
+
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -17,97 +19,15 @@
 
 </head>
 
-<body>
-    <div id="topBar">
-        <div id="innerTopBar">
-            <div id="innerTopBar_left">
-                <div id="topBar_icon">
-                    <div id="topBar_icon_inner">
+<body ng-controller="IndexController">
 
-                    </div>
-                </div>
-                <span id="topBar_logoText">todo.list</span>
-            </div>
-            <div id="innerTopBar_right">
-                <span id="topBar_rightIcon" class="glyphicon glyphicon-th-large"></span>
-            </div>
-        </div>
-    </div>
+    <!-- HERE LIES: static top bar navigation -->
+    <div id="topBar" ng-include="'views/partials/topBar.html'"></div>
+
+    <!-- HERE LIES: main content container -->
     <div id="mainContainer">
-        <div id="dataNav">
-            <div id="dataNav_topSection">
-
-                <!-- <ul id="dataNav_filters">
-                    <li class="filter" id="filter_history"><span class="navIcon">O</span>History</li>
-                    <li class="filter" id="filter_today"><span class="navIcon">O</span>Today</li>
-                    <li class="filter" id="filter_7"><span class="navIcon">O</span>Next 7 Days</li>
-                </ul> -->
-            </div>
-
-
-            <div id="dataNav_midSection">
-                <ul id="dataNav_filters">
-                    <li class="filterBy" id="filterBy_priority"><span class="navIcon"></span>Priority</li>
-                    <ul id="priority_filter">
-                        <li class="labelFilter" id="highToLow">highest to lowest</li>
-                        <li class="labelFilter" id="lowToHigh">lowest to highest</li>
-                        <li class="labelFilter" id="low">low: 0-3</li>
-                        <li class="labelFilter" id="medium">med: 4-6</li>
-                        <li class="labelFilter" id="high">high:7-10</li>
-                    </ul>
-
-                    <li class="filterBy" id="filterBy_label"><span class="navIcon"></span>Label</li>
-                    <ul id="labelList">
-                        <!-- dynamic fill -->
-                    </ul>
-                    <li class="filterBy" id="filterBy_completed"><span class="navIcon"></span>Completion</li>
-                    <ul id="priority_filter">
-                        <li class="labelFilter" id="is_complete">completed tasks</li>
-                        <li class="labelFilter" id="isnt_complete">uncomplete tasks</li>
-                    </ul>
-                </ul>
-            </div>
-
-
-        </div>
-
-
-
-
-        <div id="dataDisplay">
-            <div id="displayDate">
-                <span id="dayName">My Tasks</span>
-                <span id="dateText">todo.list // <a id="addTaskLabel" href='#'>add task</a></ad></span>
-                <div id="underline"></div>
-                <div id="formPopup">
-                    <form id="addTask_form">
-                        <div class="form-group">
-                            <label class="taskLabel" for="taskName">Task:</label>
-                            <input type="text" id="task_name" name="task_name" class="task_input form-control" />
-                            <label class="taskLabel" for="task_Label">Label:</label>
-                            <input type="text" id="task_label" placeholder="" name="task_label" class="label_input form-control" />
-                            <label class="taskLabel" for="task_Priority">Priority:</label>
-                            <input type="text" id="task_priority" placeholder="" name="task_priority" class="priority_input form-control" />
-                        </div>
-
-                        <button id="addTaskButton">Add</button>
-                        <a href='#' id="cancel">Cancel</a>
-                        <div id="bottomCover"></div>
-                    </form>
-
-
-
-                </div>
-            </div>
-
-            <div id="task-list">
-
-            </div>
-
-
-
-
-        </div>
+        <div id="dataNav" ng-include="'views/partials/dataNav.html'"></div>
+        <div id="dataDisplay" ng-include="'views/partials/dataDisplay.html'"></div>
     </div>
 
 </body>
