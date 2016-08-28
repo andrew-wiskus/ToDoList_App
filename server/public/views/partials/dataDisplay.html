@@ -1,31 +1,51 @@
 <!DOCTYPE html>
 <div id="displayDate">
 
-    <span id="dayName">My Tasks</span>
-    <span id="dateText">todo.list // <a id="addTaskLabel" href='#'>add task</a></ad></span>
-    <div id="underline"></div>
+    <span class="dayName">My Tasks</span>
+    <span class="dateText">todo.list // <a id="addTaskLabel" ng-click="quickAddTask()" href="#">add task</a></span>
+    <div class="title-divider"></div>
 
-</div>
-
-<div id="formPopup">
-    <form id="addTask_form">
-        <div class="form-group">
-            <label class="taskLabel" for="taskName">Task:</label>
-            <input type="text" id="task_name" name="task_name" class="task_input form-control" />
-            <label class="taskLabel" for="task_Label">Label:</label>
-            <input type="text" id="task_label" placeholder="" name="task_label" class="label_input form-control" />
-            <label class="taskLabel" for="task_Priority">Priority:</label>
-            <input type="text" id="task_priority" placeholder="" name="task_priority" class="priority_input form-control" />
-        </div>
-
-        <button id="addTaskButton">Add</button>
-        <a href='#' id="cancel">Cancel</a>
-        <div id="bottomCover"></div>
-    </form>
 </div>
 
 
 
 <div id="task-list">
+    <div ng-init="taskClick = false; commentShow = false; commentAdd = false" class="list_item" ng-repeat="task in tasksToDisplay">
+        <span ng-click="checkboxClicked(task.task_completed, task.id)" class="checkBox_icon glyphicon {{task.task_completed ? 'glyphicon-check' : 'glyphicon-unchecked'}}"></span>
+        <span ng-click="taskClick = !taskClick" class="{{task.task_completed ? 'task_isComplete' : 'task_notComplete'}} task_name">{{task.task_name}}</span>
+
+        <span ng-click="task.task_description !== null ? commentShow = !commentShow : commentAdd = !commentAdd; commentClicked(task.task_description !== null ? 'hasComment' : 'noComment')" class="comment_text {{task.task_description !== null ? 'hasComment' : 'noComment'}} glyphicon glyphicon-comment"
+            ng-mouseover="hoverIn_comment()" ng-mouseleave="hoverOut_comment()">
+          <span ng-show="hoverComment" class="{{task.task_description !== null ? 'view_comment' : 'add_comment'}}">
+                       {{task.task_description !== null ? (commentShow ? 'hide' : 'view') : (commentAdd ? 'cancel' : 'add')}}
+          </span></span>
+          <div class="edit_divBox" ng-mouseover="hoverIn_edit()" ng-mouseleave="hoverOut_edit()">
+        <span ng-click="editTaskClicked(task)" class="edit_icon glyphicon glyphicon-edit" >
+       <span ng-show="hoverEdit" class="edit_task">
+                    <a>Edit</a>
+       </span></span></div>
+        <div ng-click="labelClicked(task.task_label)" class="{{task.task_label !== '' ? 'task_hasLabel' : 'task_noLabel'}}">
+            <span class="label_icon glyphicon glyphicon-asterisk"></span>
+            <span class="label_text">{{task.task_label}}</span>
+        </div>
+        <div class="task_description" ng-show="taskClick"> Date Added: {{task.task_date}} // Priority: {{task.task_priority}} </div>
+        <div class="task_showComment" ng-show="commentShow">
+            <div class="comment_dividerTop"></div>
+            <p class="task_description_text">{{task.task_description}}</p>
+            <div class="comment_dividerBot"></div>
+        </div>
+
+        <div class="task_addComment" ng-show="commentAdd">
+            <h6 class="commentLabel">Comment:</h6>
+            <input class="taskcomment_input" type="text" ng-model="taskCommentInput" />
+            <button ng-click="addNewComment(task, taskCommentInput); commentAdd = !commentAdd">Add Comment</button>
+            <button ng-click="commentAdd = !commentAdd">Cancel</button>
+        </div>
+          <div class="task-divider"></div>
+    </div>
+    <div class="addTask_inList">
+        <p class="task_name" id="addTask_bottom" ng-click="quickAddTask()">+ add task</p>
+    </div>
+
 
 </div>

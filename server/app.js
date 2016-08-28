@@ -18,9 +18,11 @@ var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+// app.use(bodyParser.urlencoded({
+//     extended: true
+// }));
+
+app.use(bodyParser.json());
 
 
 
@@ -31,8 +33,8 @@ console.log(testModule.test("\n\n\n\napp.js: testing module connection"));
 
 
 //routes
-var testRoute = require("./routes/testRoute.js");
-app.use('/testRoute', testRoute);
+var editComment = require("./routes/editComment.js");
+app.use('/editComment', editComment);
 
 var todoList = require("./routes/todoList.js");
 app.use('/todoList', todoList);

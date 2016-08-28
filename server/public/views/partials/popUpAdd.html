@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<div class="fullWindow" ng-click="cancelAddTask(); newTask = {}">
+</div>
+<div class="popUp_AddTask">
+
+<h4 class="popUp_title">Add Task.</h4>
+<div class="title_divider"></div>
+<form id="quickAdd" ng-model="newTask">
+
+
+  <input focus-on="focusMe" class="input_fullWindow" type="text" ng-model="newTask.name" required="" />
+  <h4 class="taskName_input label_fullWindow">Task:</h4>
+  <br />
+  <input class="input_fullWindow" type="text" ng-model="newTask.comment"  />
+  <h4 class="taskComment_input label_fullWindow">Comment:</h4>
+  <br />
+
+  <input ng-model="newTask.label" class="labelInput" type="text"/>
+  <h4 class="input_label">Label:</h4>
+  <select ng-model="selected_option" class="priorityDropDown" ng-change="newTask.priority = selected_option">
+    <option value="0">Low: 0</option>
+    <option value="1">Low: 1</option>
+    <option value="2">Low: 2</option>
+    <option value="3">Low: 3</option>
+    <option value="4">Med: 4</option>
+    <option value="5">Med: 5</option>
+    <option value="6">Med: 6</option>
+    <option value="7">High: 7</option>
+    <option value="8">High: 8</option>
+    <option value="9">High: 9</option>
+    <option value="10">High: 10</option>
+  </select>
+    <h4 class="input_priority">Priority:</h4>
+
+
+
+
+
+  <button class="submitTask" type="submit" ng-click="addNewTask(newTask); newTask={}">Save Task</button>
+  <button class="cancelTask" ng-click="cancelAddTask(); newTask={}">Cancel</button>
+</form>
+</div>

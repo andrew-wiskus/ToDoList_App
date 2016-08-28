@@ -3,23 +3,19 @@ var router = express.Router();
 var pg = require('pg');
 var connectionString = 'postgres://localhost:5432/omicron';
 
-
 router.put('/:id', function(req, res) {
     var id = req.params.id;
-    var taskInfo = req.body;
-
+    var taskStatus = req.body.comment;
+    
     pg.connect(connectionString, function(err, client, done) {
         if (err) {
             console.log("\n \n \n \n!!!HEY ERROR CONSOLE LOG HERE!!!\n error in PUT, pg.connect", err, "\n \n \n \n");
             res.sendStatus(500);
         }
 
-        if (taskInfo.task_priority === "") {
-            taskInfo.task_priority = 0;
-        }
         //To manage strings and refrences cleaner
-        var queryString = 'UPDATE taskList SET task_name = $1, task_label = $2, task_priority = $3, task_description = $5 WHERE id = $4';
-        var refrenceValues = [taskInfo.task_name,taskInfo.task_label,taskInfo.task_priority, id, taskInfo.task_description];
+        var queryString = 'UPDATE taskList SET task_description = $1 WHERE id = $2';
+        var refrenceValues = [taskStatus, id];
 
         client.query(queryString, refrenceValues,
 
@@ -38,4 +34,6 @@ router.put('/:id', function(req, res) {
 
 });
 
-module.exports =router;
+
+
+module.exports = router;

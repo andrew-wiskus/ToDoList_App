@@ -83,7 +83,9 @@ router.put('/:id', function(req, res) {
 
 });
 router.post('/', function(req, res) {
-    var item = req.body;
+    var task = req.body;
+    console.log('tast', task);
+    console.log(req);
 
     pg.connect(connectionString, function(err, client, done) {
         if (err) {
@@ -92,8 +94,8 @@ router.post('/', function(req, res) {
         }
 
         //To manage strings and refrences cleaner
-        var queryString = 'INSERT INTO taskList (task_name, task_label, task_priority, task_completed) VALUES ($1, $2, $3, $4)';
-        var refrenceValues = [item.task_name, item.task_label, item.task_priority, false];
+        var queryString = 'INSERT INTO taskList (task_name, task_label, task_priority, task_completed, task_description, task_date) VALUES ($1, $2, $3, $4, $5, $6)';
+        var refrenceValues = [task.task_name, task.task_label, task.task_priority, false, task.task_description, task.task_date];
 
 
         client.query(queryString, refrenceValues,

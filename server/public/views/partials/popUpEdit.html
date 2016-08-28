@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<div class="fullWindow" ng-click="cancelEdits();">
+</div>
+<div class="popUp_AddTask">
+
+<h4 class="popUp_title">Edit Task</h4>
+<div class="title_divider"></div>
+<form id="quickAdd">
+
+  {{task}}
+  <input focus-on="focusMe" class="input_fullWindow" type="text" ng-model="task_name" required="" />
+  <h4 class="taskName_input label_fullWindow">Task:</h4>
+  <br />
+  <input class="input_fullWindow" type="text" ng-model="task_description"  />
+  <h4 class="taskComment_input label_fullWindow">Comment:</h4>
+  <br />
+
+  <input ng-model="task_label" class="labelInput" type="text"/>
+  <h4 class="input_label">Label:</h4>
+  <select ng-model="currentPriority" class="priorityDropDown" ng-change="task_priority = currentPriority">
+    <option value="0">Low: 0</option>
+    <option value="1">Low: 1</option>
+    <option value="2">Low: 2</option>
+    <option value="3">Low: 3</option>
+    <option value="4">Med: 4</option>
+    <option value="5">Med: 5</option>
+    <option value="6">Med: 6</option>
+    <option value="7">High: 7</option>
+    <option value="8">High: 8</option>
+    <option value="9">High: 9</option>
+    <option value="10">High: 10</option>
+  </select>
+    <h4 class="input_priority">Priority:</h4>
+
+
+
+  <button class="deleteTask" type="submit" ng-click="postEdits(task_name, task_description, task_label, currentPriority, task_id)">Save Task</button>
+  <button ng-model="task_id" ng-click="delete(task_id)" confirm="Are you sure?" class="submitTask">DELETE</button>
+
+  <button class="cancelTask" ng-click="cancelEdits()">Cancel</button>
+</form>
+</div>

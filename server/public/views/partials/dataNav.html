@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 
 
-<ul id="date_filter">
-    <li class="filterBy" ng-click="clickedDateFilter('history')" id="filter_history">-History</li>
-    <li class="filterBy" ng-click="clickedDateFilter('today')" id="filter_today">-Today</li>
-    <li class="filterBy" ng-click="clickedDateFilter('nextSeven')" id="filter_7">-Next 7 Days</li>
+
+
+<h1 ng-click="showAll()" class="filterBy">-Show All</h1>
+<h1 ng-click="dateClicked = !dateClicked" class="filterBy" id="filterBy_date">-Date</h1>
+<ul ng-show="dateClicked">
+<li  class="filter" ng-click="clickedDateFilter('today')">added today</li>
+<li  class="filter" ng-click="clickedDateFilter('past7')">past seven days</li>
+<li  class="filter" ng-click="clickedDateFilter('newToOld')">by most recent</li>
+<li  class="filter" ng-click="clickedDateFilter('oldToNew')">by oldest</li>
+
 </ul>
-
-
-<h1 ng-click="priorityClicked = !priorityClicked" class="filterBy" id="filterBy_priority">-Priority</h1>
+<h1 ng-click="priorityClicked = !priorityClicked"      class="filterBy" id="filterBy_priority">-Priority</h1>
 <ul ng-show="priorityClicked">
-    <li class="filter" id="highToLow">highest to lowest</li>
-    <li class="filter" id="lowToHigh">lowest to highest</li>
-    <li class="filter" id="low">low:0-3[{{taskData.priorityCount[0] + taskData.priorityCount[1] + taskData.priorityCount[2] + taskData.priorityCount[3]}}]</li>
-    <li class="filter" id="medium">med: 4-6[{{taskData.priorityCount[4] + taskData.priorityCount[5] + taskData.priorityCount[6]}}]</li>
-    <li class="filter" id="high">high:7-10[{{taskData.priorityCount[7] + taskData.priorityCount[8] + taskData.priorityCount[9] + taskData.priorityCount[10]}}]</li>
+    <li ng-click="clickedPriorityFilter('highToLow')"  class="filter" id="highToLow">highest to lowest</li>
+    <li ng-click="clickedPriorityFilter('lowToHigh')"  class="filter" id="lowToHigh">lowest to highest</li>
+    <li ng-click="clickedPriorityFilter('low')"        class="filter" id="low">low:0-3[{{taskData.priorityCount[0] + taskData.priorityCount[1] + taskData.priorityCount[2] + taskData.priorityCount[3]}}]</li>
+    <li ng-click="clickedPriorityFilter('medium')"     class="filter" id="medium">med: 4-6[{{taskData.priorityCount[4] + taskData.priorityCount[5] + taskData.priorityCount[6]}}]</li>
+    <li ng-click="clickedPriorityFilter('high')"       class="filter" id="high">high:7-10[{{taskData.priorityCount[7] + taskData.priorityCount[8] + taskData.priorityCount[9] + taskData.priorityCount[10]}}]</li>
 </ul>
 
-<h1 ng-click="labelClicked = !labelClicked" class="filterBy" id="filterBy_label">-Label</h1>
-<ul ng-show="labelClicked">
-    <li class="filter" id="all">labeled[{{taskData.allLabelsCount}}]</li>
-    <li class="filter" ng-repeat="label in taskData.uniqueLabels">{{label}}[{{taskData.labelsCount[label]}}]</li>
+<h1 ng-click="labelClicked = !labelClicked"             class="filterBy" id="filterBy_label">-Label</h1>
+<ul ng-show="!labelClicked">
+    <li ng-click="clickedLabelFilter('all')"            class="filter" id="all">labeled[{{taskData.allLabelsCount}}]</li>
+    <li ng-click="clickedLabelFilter(label)"            class="filter" ng-repeat="label in taskData.uniqueLabels">{{label}}[{{taskData.labelsCount[label]}}]</li>
 </ul>
 
-<h1 ng-click="completedClicked = !completedClicked" class="filterBy" id="filterBy_completion">-Completion</h1>
+<h1 ng-click="completedClicked = !completedClicked"     class="filterBy" id="filterBy_completion">-Completion</h1>
 <ul ng-show="completedClicked">
-    <li class="filter" id="is_complete">completed tasks[{{taskData.completed.isTrue}}]</li>
-    <li class="filter" id="isnt_complete">uncomplete tasks[{{taskData.completed.isFalse}}]</li>
+    <li ng-click="clickedCompletedFilter('complete')"   class="filter" id="is_complete">completed tasks[{{taskData.completed.isTrue}}]</li>
+    <li ng-click="clickedCompletedFilter('uncomplete')" class="filter" id="isnt_complete">uncomplete tasks[{{taskData.completed.isFalse}}]</li>
 </ul>
