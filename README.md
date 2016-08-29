@@ -1,7 +1,6 @@
 # ToDoList_App
 
-## Look at 'bugs' filter for all the bugs I'm aware of
-### I need to basically refactor everything because its a pasta mess.
-### I can't add or fix any features atm cuz its just unnecessarily timely to do rn
-
-### Give me a couple days to make it perfect :)
+Still slightly buggy on the UX side..
+1. tasks will shift positions on content edit/checking off items/etc.
+-need to establish a history variable and orginize the list by that.
+... and more but thats the biggest one. 
