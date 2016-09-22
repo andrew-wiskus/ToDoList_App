@@ -1,7 +1,7 @@
-# ToDoList_App
-
-##jquery branch to see jquery/shat style
-##angular dev to see angular and much better styles
+## ToDoList_App
+#latest branch -> angular dev. 
+###jquery branch style
+###angular dev to see angular and much better styles
 
 todo: remake. 
 http://www.irunurun.com/
